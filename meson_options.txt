@@ -1,0 +1,4 @@
+## Enable build for the tests of unordered_tree
+option('UNORDERED_TREE_BUILD_TESTS', type: 'boolean', value: false, description: 'Build unordered_tree unit tests.')
+## Build the examples of unordered_tree
+option('UNORDERED_TREE_BUILD_EXAMPLES', type: 'boolean', value: false, description: 'Build unordered_tree examples.')
