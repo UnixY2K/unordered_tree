@@ -8,9 +8,9 @@ project(
 subdir('unordered_tree')
 
 if get_option('UNORDERED_TREE_BUILD_TESTS')
-    subdirs('tests')
+    subdir('tests')
 endif
 if get_option('UNORDERED_TREE_BUILD_EXAMPLES')
-    subdirs('examples')
+    subdir('examples')
 endif
 
