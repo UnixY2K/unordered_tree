@@ -1,3 +1,4 @@
+#include <unordered_tree/node.hpp>
 #include <unordered_tree/node_value.hpp>
 
 NodeValue::NodeValue(NodeValue const &other) : value(std::move(other.value)) {}

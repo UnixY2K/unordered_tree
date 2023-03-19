@@ -5,6 +5,13 @@ project(
     version : '0.0.1',
 )
 
+# catch2 for unit tests
+catch2_dep = dependency(
+                'catch2',
+                fallback: ['catch2', 'catch2_dep']
+)
+
+
 subdir('unordered_tree')
 
 if get_option('UNORDERED_TREE_BUILD_TESTS')
