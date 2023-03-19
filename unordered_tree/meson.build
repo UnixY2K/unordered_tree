@@ -4,6 +4,7 @@ unordered_tree_incl = [
 
 unordered_tree_srcs = files(
     'src/node_value.cpp',
+    'src/node_variant.cpp',
     'src/node.cpp',
     'src/scalar_value.cpp',
 )
