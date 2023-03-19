@@ -3,7 +3,9 @@ unordered_tree_incl = [
 ]
 
 unordered_tree_srcs = files(
-    'src/node.cpp'
+    'src/node_value.cpp',
+    'src/node.cpp',
+    'src/scalar_value.cpp',
 )
 
 # static link only library
