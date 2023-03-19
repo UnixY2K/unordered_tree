@@ -50,19 +50,37 @@ class ScalarValue {
 class Node;
 class NodeValue;
 
+// class that helps to contain a Node within a NodeValue
+class NodeVariant {
+	// the node cannot be null
+	std::unique_ptr<Node> value;
+
+  public:
+	NodeVariant();
+	NodeVariant(NodeVariant const &other);
+	NodeVariant(NodeVariant &&other);
+	NodeVariant(Node const &node);
+	NodeVariant(Node &&node);
+
+	std::reference_wrapper<Node> get_value() const;
+
+	NodeVariant &operator=(NodeVariant const &other);
+	NodeVariant &operator=(NodeVariant &&other);
+};
+
 /*
  * helper class that can contain a scalar value or a node within
  */
 class NodeValue {
-	using node_t = std::variant<ScalarValue, std::unique_ptr<Node>>;
+	using node_t = std::variant<ScalarValue, NodeVariant>;
 	node_t value = ScalarValue{};
 
   public:
 	NodeValue() = default;
 	// explicit NodeValue(node_t value) : value(std::move(value)) {}
-	NodeValue(Node &&value);
-	NodeValue(std::unique_ptr<Node> &&value);
+	NodeValue(NodeValue const &other);
 	NodeValue(NodeValue &&other) noexcept;
+	NodeValue(Node &&value);
 	NodeValue(ScalarValue scalar);
 	template <typename T>
 	    requires(DecaysToScalarType<T>)
@@ -87,4 +105,11 @@ class NodeValue {
 	}
 };
 
-class Node {};
+class Node {
+  public:
+	Node() = default;
+	Node(Node const &other) noexcept = default;
+	Node(Node &&other) = default;
+	Node &operator=(Node const &other) noexcept = default;
+	Node &operator=(Node &&other) = default;
+};
