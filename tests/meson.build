@@ -1,9 +1,11 @@
 
 test_srcs = files(
+    'src/scalar_value.cpp',
     'src/source.cpp',
 )
 test_deps = [
     catch2_dep,
+    unordered_tree_dep,
 ]
 test_args = []
 
