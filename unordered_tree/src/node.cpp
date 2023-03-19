@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <functional>
 #include <memory>
 #include <optional>
@@ -25,7 +26,7 @@ NodeVariant &NodeVariant::operator=(NodeVariant const &other) {
 	value.reset(new Node{other.get_value()});
 	return *this;
 }
-NodeVariant &NodeVariant::operator=(NodeVariant &&other) {
+NodeVariant &NodeVariant::operator=(NodeVariant &&other) noexcept {
 	value = std::move(other.value);
 	other.value.reset(new Node{});
 	return *this;

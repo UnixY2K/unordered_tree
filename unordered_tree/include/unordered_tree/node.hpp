@@ -45,6 +45,9 @@ class ScalarValue {
 	template <typename T> std::optional<T> as() const {
 		return is<T>() ? std::get<T>(value) : std::nullopt;
 	}
+
+	ScalarValue &operator=(ScalarValue const &other) = default;
+	ScalarValue &operator=(ScalarValue &&other) noexcept = default;
 };
 
 class Node;
@@ -65,7 +68,7 @@ class NodeVariant {
 	std::reference_wrapper<Node> get_value() const;
 
 	NodeVariant &operator=(NodeVariant const &other);
-	NodeVariant &operator=(NodeVariant &&other);
+	NodeVariant &operator=(NodeVariant &&other) noexcept;
 };
 
 /*
@@ -103,6 +106,9 @@ class NodeValue {
 			return value && value->is<T>();
 		}
 	}
+
+	NodeValue &operator=(NodeValue const &other) = default;
+	NodeValue &operator=(NodeValue &&other) noexcept = default;
 };
 
 class Node {

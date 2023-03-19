@@ -4,7 +4,7 @@
 #include <variant>
 
 std::string get_type(NodeValue value) {
-	std::string type = "unkown";
+	std::string type = "unknown";
 	if (value.is<int>()) {
 		type = "int";
 	} else if (value.is<bool>()) {
@@ -19,12 +19,16 @@ std::string get_type(NodeValue value) {
 		type = "string";
 	} else if (value.is<std::monostate>()) {
 		type = "None";
+	} else if (value.is<Node>()) {
+		type = "Node";
 	}
 	return type;
 }
 
 int main() {
-	NodeValue value{};
+	NodeValue value{1};
+	value = Node{};
+	value = {};
 	bool is_scalar = value.is<ScalarValue>(); // returns true
 	bool is_node = value.is<Node>();          // returns false
 	std::string type = get_type(value);
