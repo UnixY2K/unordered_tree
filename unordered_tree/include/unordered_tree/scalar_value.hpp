@@ -41,7 +41,7 @@ class ScalarValue {
 	}
 	// value if is of the given type if not nothing
 	template <typename T> std::optional<T> as() const {
-		return is<T>() ? std::get<T>(value) : std::nullopt;
+		return is<T>() ? std::get<T>(value) : std::optional<T>(std::nullopt);
 	}
 
 	ScalarValue &operator=(ScalarValue const &other) = default;
