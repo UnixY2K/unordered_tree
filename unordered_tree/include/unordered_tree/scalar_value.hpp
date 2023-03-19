@@ -46,4 +46,5 @@ class ScalarValue {
 
 	ScalarValue &operator=(ScalarValue const &other) = default;
 	ScalarValue &operator=(ScalarValue &&other) noexcept = default;
+	ScalarValue &operator=(scalar_t const &value);
 };
