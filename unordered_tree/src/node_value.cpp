@@ -1,10 +1,12 @@
+#include <algorithm>
 #include <unordered_tree/node.hpp>
 #include <unordered_tree/node_value.hpp>
 
 NodeValue::NodeValue(NodeValue const &other) : value(std::move(other.value)) {}
 NodeValue::NodeValue(NodeValue &&other) noexcept
     : value(std::move(other.value)) {}
-NodeValue::NodeValue(Node &&value) : value(NodeVariant(std::move(value))) {}
+NodeValue::NodeValue(Node const &value) : value{value} {}
+NodeValue::NodeValue(Node &&value) : value{std::move(value)} {}
 
 NodeValue::NodeValue(ScalarValue scalar) : value(std::move(scalar)) {}
 bool NodeValue::is_scalar() const {
@@ -23,4 +25,13 @@ std::optional<std::reference_wrapper<Node>> NodeValue::as_node() const {
 	return is_node()
 	           ? std::make_optional(std::get<NodeVariant>(value).get_value())
 	           : std::nullopt;
+}
+
+NodeValue &NodeValue::operator=(Node const &other) {
+	value = other;
+	return *this;
+}
+NodeValue &NodeValue::operator=(Node &&other) noexcept {
+	value = std::move(other);
+	return *this;
 }

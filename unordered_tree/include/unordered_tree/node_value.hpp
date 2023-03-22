@@ -18,6 +18,8 @@ class NodeVariant {
 
 	std::reference_wrapper<Node> get_value() const;
 
+	NodeVariant &operator=(Node const &other);
+	NodeVariant &operator=(Node &&other) noexcept;
 	NodeVariant &operator=(NodeVariant const &other);
 	NodeVariant &operator=(NodeVariant &&other) noexcept;
 };
@@ -34,6 +36,7 @@ class NodeValue {
 	// explicit NodeValue(node_t value) : value(std::move(value)) {}
 	NodeValue(NodeValue const &other);
 	NodeValue(NodeValue &&other) noexcept;
+	NodeValue(Node const &value);
 	NodeValue(Node &&value);
 	NodeValue(ScalarValue scalar);
 	template <typename T>
@@ -58,6 +61,8 @@ class NodeValue {
 		}
 	}
 
+	NodeValue &operator=(Node const &other);
+	NodeValue &operator=(Node &&other) noexcept;
 	NodeValue &operator=(NodeValue const &other) = default;
 	NodeValue &operator=(NodeValue &&other) noexcept = default;
 };

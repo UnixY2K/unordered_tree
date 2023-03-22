@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <unordered_tree/node.hpp>
 #include <unordered_tree/node_value.hpp>
 
@@ -13,6 +14,14 @@ NodeVariant::NodeVariant(Node const &node) : value{new Node{node}} {}
 NodeVariant::NodeVariant(Node &&node) : value{new Node{std::move(node)}} {}
 std::reference_wrapper<Node> NodeVariant::get_value() const {
 	return std::ref(*value);
+}
+NodeVariant &NodeVariant::operator=(Node const &other) {
+	value.reset(new Node{other});
+	return *this;
+}
+NodeVariant &NodeVariant::operator=(Node &&other) noexcept {
+	*value = std::move(other);
+	return *this;
 }
 NodeVariant &NodeVariant::operator=(NodeVariant const &other) {
 	value.reset(new Node{other.get_value()});
