@@ -1,6 +1,7 @@
 #include <format>
 #include <iostream>
 #include <unordered_tree/node.hpp>
+#include <unordered_tree/node_value.hpp>
 #include <variant>
 
 std::string get_type(NodeValue value) {
@@ -28,7 +29,7 @@ std::string get_type(NodeValue value) {
 int main() {
 	NodeValue value{1};
 	value = Node{};
-	value = {};
+	value = NodeValue{};
 	bool is_scalar = value.is<ScalarValue>(); // returns true
 	bool is_node = value.is<Node>();          // returns false
 	std::string type = get_type(value);
