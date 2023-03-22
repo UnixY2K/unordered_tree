@@ -37,7 +37,12 @@ class ScalarValue {
 	template <typename T>
 	    requires(!DecaysToScalarType<T>) bool
 	is() const {
-		return false;
+		// treat void as no value or std::monostate
+		if constexpr (std::is_same_v<T, void>) {
+			return std::holds_alternative<std::monostate>(value);
+		} else {
+			return false;
+		}
 	}
 	// value if is of the given type if not nothing
 	template <typename T> std::optional<T> as() const {

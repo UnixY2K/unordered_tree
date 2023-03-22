@@ -1,5 +1,6 @@
 
 test_srcs = files(
+    'src/node_value.cpp',
     'src/scalar_value.cpp',
     'src/source.cpp',
 )
