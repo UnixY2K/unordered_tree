@@ -21,7 +21,6 @@ std::optional<ScalarValue> NodeValue::as_scalar() const {
 }
 
 std::optional<std::reference_wrapper<Node>> NodeValue::as_node() const {
-	return std::nullopt;
 	return is_node()
 	           ? std::make_optional(std::get<NodeVariant>(value).get_value())
 	           : std::nullopt;
