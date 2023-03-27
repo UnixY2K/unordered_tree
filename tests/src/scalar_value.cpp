@@ -2,7 +2,7 @@
 #include <unordered_tree/scalar_value.hpp>
 
 TEST_CASE("Test scalar value behavior", "[ScalarValue]") {
-	SECTION("check wheter it can be reasigned") {
+	SECTION("check whether it can be reasigned") {
 		ScalarValue sv{};
 		REQUIRE(sv.is<void>());
 		sv = 2;

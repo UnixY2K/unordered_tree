@@ -3,7 +3,7 @@
 #include <unordered_tree/node_value.hpp>
 
 TEST_CASE("Test node value behavior", "[NodeValue]") {
-	SECTION("test wheter it can be reasigned") {
+	SECTION("test whether it can be reasigned") {
 		NodeValue nv{};
 		REQUIRE(nv.is<void>());
 		nv = Node{};
