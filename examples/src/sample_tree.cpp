@@ -1,40 +1,16 @@
 #include <format>
 #include <iostream>
-#include <variant>
 
 #include <unordered_tree/node.hpp>
 #include <unordered_tree/node_value.hpp>
 
-std::string get_type(ouroboros::NodeValue value) {
-	std::string type = "unknown";
-	if (value.is<int>()) {
-		type = "int";
-	} else if (value.is<bool>()) {
-		type = "bool";
-	} else if (value.is<char>()) {
-		type = "char";
-	} else if (value.is<float>()) {
-		type = "float";
-	} else if (value.is<double>()) {
-		type = "double";
-	} else if (value.is<std::string>()) {
-		type = "string";
-	} else if (value.is<std::monostate>()) {
-		type = "None";
-	} else if (value.is<ouroboros::Node>()) {
-		type = "Node";
-	}
-	return type;
-}
-
 int main() {
-
 	ouroboros::NodeValue value{1};
 	value = ouroboros::Node{};
 	value = ouroboros::NodeValue{};
 	bool is_scalar = value.is<ouroboros::ScalarValue>(); // returns true
 	bool is_node = value.is<ouroboros::Node>();          // returns false
-	std::string type = get_type(value);
+	std::string_view type = value.get_type();
 	std::cout << std::format("is_scalar: {}\n", is_scalar);
 	std::cout << std::format("is_node  : {}\n", is_node);
 	std::cout << std::format("type     : {}\n", type);

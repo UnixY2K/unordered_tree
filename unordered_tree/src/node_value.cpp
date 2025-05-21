@@ -29,6 +29,15 @@ std::optional<std::reference_wrapper<Node>> NodeValue::as_node() const {
 	           : std::nullopt;
 }
 
+std::string_view NodeValue::get_type() const {
+	return visit<std::string_view>(overloads{
+	    [](const ScalarValue &scalar) -> std::string_view {
+		    return scalar.get_type();
+	    },
+	    [](const NodeVariant &) -> std::string_view { return "Node"; },
+	});
+}
+
 NodeValue &NodeValue::operator=(Node const &other) {
 	value = other;
 	return *this;

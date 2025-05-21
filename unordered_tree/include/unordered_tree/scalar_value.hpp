@@ -1,6 +1,7 @@
 #pragma once
 #include <optional>
 #include <string>
+#include <string_view>
 #include <type_traits>
 #include <variant>
 
@@ -55,6 +56,12 @@ class ScalarValue {
 	template <typename T> std::optional<T> as() const {
 		return is<T>() ? std::get<T>(value) : std::optional<T>(std::nullopt);
 	}
+
+	template <typename T, typename... Ts>
+	T visit(const overloads<Ts...> &visitor) const {
+		return std::visit(visitor, value);
+	}
+	std::string_view get_type() const;
 
 	ScalarValue &operator=(ScalarValue const &other) = default;
 	ScalarValue &operator=(ScalarValue &&other) noexcept = default;
