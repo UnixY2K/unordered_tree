@@ -1,6 +1,9 @@
 #include <algorithm>
+
 #include <unordered_tree/node.hpp>
 #include <unordered_tree/node_value.hpp>
+
+namespace ouroboros {
 
 NodeValue::NodeValue(NodeValue const &other) : value(std::move(other.value)) {}
 NodeValue::NodeValue(NodeValue &&other) noexcept
@@ -34,3 +37,5 @@ NodeValue &NodeValue::operator=(Node &&other) noexcept {
 	value = std::move(other);
 	return *this;
 }
+
+} // namespace ouroboros

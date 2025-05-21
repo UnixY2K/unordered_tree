@@ -6,6 +6,8 @@
 
 #include <unordered_tree/node_value.hpp>
 
+namespace ouroboros {
+
 class Node {
 	using node_val_t = std::variant<NodeValue, std::vector<NodeValue>>;
 	std::string id;
@@ -86,3 +88,5 @@ class Node {
 	Node &operator=(std::vector<NodeValue> const &other);
 	Node &operator=(std::vector<NodeValue> &&other) noexcept;
 };
+
+} // namespace ouroboros

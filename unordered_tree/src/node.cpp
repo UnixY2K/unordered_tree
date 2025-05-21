@@ -1,8 +1,11 @@
 #include <optional>
 #include <string>
+#include <vector>
+
 #include <unordered_tree/node.hpp>
 #include <unordered_tree/node_value.hpp>
-#include <vector>
+
+namespace ouroboros {
 
 Node::Node(std::string const &id) : id{id} {}
 Node::Node(std::string &&id) noexcept : id{std::move(id)} {}
@@ -113,3 +116,5 @@ Node &Node::operator=(std::vector<NodeValue> &&other) noexcept {
 	value = std::move(other);
 	return *this;
 }
+
+} // namespace ouroboros

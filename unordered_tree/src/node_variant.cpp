@@ -1,6 +1,9 @@
 #include <algorithm>
+
 #include <unordered_tree/node.hpp>
 #include <unordered_tree/node_value.hpp>
+
+namespace ouroboros {
 
 NodeVariant::NodeVariant() : value{new Node{}} {}
 NodeVariant::NodeVariant(NodeVariant const &other)
@@ -32,3 +35,5 @@ NodeVariant &NodeVariant::operator=(NodeVariant &&other) noexcept {
 	other.value.reset(new Node{});
 	return *this;
 }
+
+} // namespace ouroboros

@@ -3,6 +3,8 @@
 
 #include <unordered_tree/scalar_value.hpp>
 
+namespace ouroboros {
+
 class Node;
 
 // class that helps to contain a Node within a NodeValue
@@ -66,4 +68,28 @@ class NodeValue {
 	NodeValue &operator=(Node &&other) noexcept;
 	NodeValue &operator=(NodeValue const &other) = default;
 	NodeValue &operator=(NodeValue &&other) noexcept = default;
+
+	std::string get_type(NodeValue value) {
+		std::string type = "unknown";
+		if (value.is<int>()) {
+			type = "int";
+		} else if (value.is<bool>()) {
+			type = "bool";
+		} else if (value.is<char>()) {
+			type = "char";
+		} else if (value.is<float>()) {
+			type = "float";
+		} else if (value.is<double>()) {
+			type = "double";
+		} else if (value.is<std::string>()) {
+			type = "string";
+		} else if (value.is<std::monostate>()) {
+			type = "None";
+		} else if (value.is<Node>()) {
+			type = "Node";
+		}
+		return type;
+	}
 };
+
+} // namespace ouroboros

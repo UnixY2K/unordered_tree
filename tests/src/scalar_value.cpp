@@ -3,7 +3,7 @@
 
 TEST_CASE("Test scalar value behavior", "[ScalarValue]") {
 	SECTION("check whether it can be reasigned") {
-		ScalarValue sv{};
+		ouroboros::ScalarValue sv{};
 		REQUIRE(sv.is<void>());
 		sv = 2;
 		REQUIRE(sv.is<int>());
@@ -11,7 +11,7 @@ TEST_CASE("Test scalar value behavior", "[ScalarValue]") {
 		REQUIRE(sv.is<float>());
 	}
 	SECTION("test default value behavior") {
-		ScalarValue sv{};
+		ouroboros::ScalarValue sv{};
 		REQUIRE(sv.as<int>().value_or(-1) == -1);
 	}
 }

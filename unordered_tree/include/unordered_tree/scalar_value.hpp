@@ -4,6 +4,13 @@
 #include <type_traits>
 #include <variant>
 
+namespace ouroboros {
+
+// helper type for the visitor
+template <class... Ts> struct overloads : Ts... {
+	using Ts::operator()...;
+};
+
 template <typename T>
 concept DecaysToScalarType = std::is_same_v<std::decay_t<T>, int> ||
                              std::is_same_v<std::decay_t<T>, bool> ||
@@ -29,14 +36,14 @@ class ScalarValue {
 	ScalarValue(scalar_t value);
 
 	template <typename T>
-	    requires(DecaysToScalarType<T>) bool
-	is() const {
+	    requires(DecaysToScalarType<T>)
+	bool is() const {
 		return std::holds_alternative<std::decay_t<T>>(value);
 	}
 
 	template <typename T>
-	    requires(!DecaysToScalarType<T>) bool
-	is() const {
+	    requires(!DecaysToScalarType<T>)
+	bool is() const {
 		// treat void as no value or std::monostate
 		if constexpr (std::is_same_v<T, void>) {
 			return std::holds_alternative<std::monostate>(value);
@@ -53,3 +60,5 @@ class ScalarValue {
 	ScalarValue &operator=(ScalarValue &&other) noexcept = default;
 	ScalarValue &operator=(scalar_t const &value);
 };
+
+} // namespace ouroboros

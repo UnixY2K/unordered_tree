@@ -4,9 +4,9 @@
 
 TEST_CASE("Test node value behavior", "[NodeValue]") {
 	SECTION("test whether it can be reasigned") {
-		NodeValue nv{};
+		ouroboros::NodeValue nv{};
 		REQUIRE(nv.is<void>());
-		nv = Node{};
-		REQUIRE(nv.is<Node>());
+		nv = ouroboros::Node{};
+		REQUIRE(nv.is<ouroboros::Node>());
 	}
 }
