@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <utility>
 #include <variant>
+#include <vector>
 
 namespace ouroboros {
 template <typename T> class unordered_tree {

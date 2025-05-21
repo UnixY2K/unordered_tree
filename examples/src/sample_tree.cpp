@@ -1,8 +1,9 @@
 #include <format>
 #include <iostream>
+#include <variant>
+
 #include <unordered_tree/node.hpp>
 #include <unordered_tree/node_value.hpp>
-#include <variant>
 
 std::string get_type(NodeValue value) {
 	std::string type = "unknown";
@@ -27,6 +28,7 @@ std::string get_type(NodeValue value) {
 }
 
 int main() {
+	Node root = {NodeValue{}};
 	NodeValue value{1};
 	value = Node{};
 	value = NodeValue{};

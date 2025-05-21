@@ -1,9 +1,10 @@
 #pragma once
 #include <optional>
 #include <string>
-#include <unordered_tree/node_value.hpp>
 #include <variant>
 #include <vector>
+
+#include <unordered_tree/node_value.hpp>
 
 class Node {
 	using node_val_t = std::variant<NodeValue, std::vector<NodeValue>>;

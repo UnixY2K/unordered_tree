@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+
 #include <unordered_tree/scalar_value.hpp>
 
 class Node;
