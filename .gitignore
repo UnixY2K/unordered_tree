@@ -1,1 +1,7 @@
+
+#ignore generated compile commands
 compile_commands.json
+
+#ignore vscode directories
+.vscode/
+.cache/
