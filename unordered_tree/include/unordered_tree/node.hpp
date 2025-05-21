@@ -8,8 +8,9 @@
 
 namespace ouroboros {
 
+using NodeVector = std::vector<NodeValue>;
 class Node {
-	using node_val_t = std::variant<NodeValue, std::vector<NodeValue>>;
+	using node_val_t = std::variant<NodeValue, NodeVector>;
 	std::string id;
 	// a node can contain 0(monostate/void) or more elements, if the list of
 	// elements is 0 it is empty
@@ -23,12 +24,13 @@ class Node {
 	Node(std::string &&id) noexcept;
 	Node(NodeValue const &value);
 	Node(NodeValue &&value) noexcept;
-	Node(std::vector<NodeValue> const &value);
-	Node(std::vector<NodeValue> &&value) noexcept;
+	Node(NodeVector const &value);
+	Node(NodeVector &&value) noexcept;
+	Node(std::initializer_list<NodeValue> init_list);
 	Node(std::string const &id, NodeValue const &value);
 	Node(std::string &&id, NodeValue &&value) noexcept;
-	Node(std::string const &id, std::vector<NodeValue> const &value);
-	Node(std::string &&id, std::vector<NodeValue> &&value) noexcept;
+	Node(std::string const &id, NodeVector const &value);
+	Node(std::string &&id, NodeVector &&value) noexcept;
 
 	void set_id(std::string const &new_id);
 	void set_id(std::string &&new_id) noexcept;
@@ -41,9 +43,8 @@ class Node {
 
 	std::optional<ScalarValue> as_scalar() const;
 	std::optional<std::reference_wrapper<Node>> as_node() const;
-	std::optional<std::reference_wrapper<const std::vector<NodeValue>>>
-	as_vector() const;
-	std::optional<std::reference_wrapper<std::vector<NodeValue>>> as_vector();
+	std::optional<std::reference_wrapper<const NodeVector>> as_vector() const;
+	std::optional<std::reference_wrapper<NodeVector>> as_vector();
 
 	template <typename T>
 	    requires(DecaysToScalarType<T>)
@@ -53,15 +54,15 @@ class Node {
 
 	void set_value(Node const &node);
 	void set_value(Node &&node) noexcept;
-	void set_value(std::vector<NodeValue> const &vector);
-	void set_value(std::vector<NodeValue> &&vector) noexcept;
+	void set_value(NodeVector const &vector);
+	void set_value(NodeVector &&vector) noexcept;
 
 	template <typename T> constexpr bool is() const {
 		if constexpr (std::is_same_v<T, ScalarValue>) {
 			return is_scalar();
 		} else if constexpr (std::is_same_v<T, Node>) {
 			return is_node();
-		} else if constexpr (std::is_same_v<T, std::vector<NodeValue>>) {
+		} else if constexpr (std::is_same_v<T, NodeVector>) {
 			return is_vector();
 		} else {
 			auto value = as_scalar();
@@ -73,7 +74,7 @@ class Node {
 			return as_scalar();
 		} else if constexpr (std::is_same_v<T, Node>) {
 			return as_node();
-		} else if constexpr (std::is_same_v<T, std::vector<NodeValue>>) {
+		} else if constexpr (std::is_same_v<T, NodeVector>) {
 			return as_vector();
 		} else {
 			auto value = as_scalar();
@@ -81,12 +82,18 @@ class Node {
 		}
 	}
 
+	template <typename T, typename... Ts>
+	T visit(const overloads<Ts...> &visitor) const {
+		return std::visit(visitor, value);
+	}
+	std::string_view get_type() const;
+
 	Node &operator=(Node const &other) noexcept = default;
 	Node &operator=(Node &&other) = default;
 	Node &operator=(NodeValue const &other);
 	Node &operator=(NodeValue &&other) noexcept;
-	Node &operator=(std::vector<NodeValue> const &other);
-	Node &operator=(std::vector<NodeValue> &&other) noexcept;
+	Node &operator=(NodeVector const &other);
+	Node &operator=(NodeVector &&other) noexcept;
 };
 
 } // namespace ouroboros

@@ -1,9 +1,11 @@
 #include <optional>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include <unordered_tree/node.hpp>
 #include <unordered_tree/node_value.hpp>
+#include <unordered_tree/scalar_value.hpp>
 
 namespace ouroboros {
 
@@ -11,15 +13,17 @@ Node::Node(std::string const &id) : id{id} {}
 Node::Node(std::string &&id) noexcept : id{std::move(id)} {}
 Node::Node(NodeValue const &value) : value{value} {}
 Node::Node(NodeValue &&value) noexcept : value{std::move(value)} {}
-Node::Node(std::vector<NodeValue> const &value) : value{value} {}
-Node::Node(std::vector<NodeValue> &&value) noexcept : value{std::move(value)} {}
+Node::Node(NodeVector const &value) : value{value} {}
+Node::Node(NodeVector &&value) noexcept : value{std::move(value)} {}
+Node::Node(std::initializer_list<NodeValue> init_list)
+    : value(NodeVector(init_list)) {}
 Node::Node(std::string const &id, NodeValue const &value)
     : id{id}, value{value} {}
 Node::Node(std::string &&id, NodeValue &&value) noexcept
     : id{std::move(id)}, value{std::move(value)} {}
-Node::Node(std::string const &id, std::vector<NodeValue> const &value)
+Node::Node(std::string const &id, NodeVector const &value)
     : id{id}, value{value} {}
-Node::Node(std::string &&id, std::vector<NodeValue> &&value) noexcept
+Node::Node(std::string &&id, NodeVector &&value) noexcept
     : id{std::move(id)}, value{std::move(value)} {}
 
 void Node::set_id(std::string const &new_id) { id = new_id; }
@@ -72,20 +76,18 @@ std::optional<std::reference_wrapper<Node>> Node::as_node() const {
 	return std::nullopt;
 }
 
-std::optional<std::reference_wrapper<const std::vector<NodeValue>>>
+std::optional<std::reference_wrapper<const NodeVector>>
 Node::as_vector() const {
-	if (std::holds_alternative<std::vector<NodeValue>>(value)) {
-		std::vector<NodeValue> const &val =
-		    std::get<std::vector<NodeValue>>(value);
+	if (std::holds_alternative<NodeVector>(value)) {
+		NodeVector const &val = std::get<NodeVector>(value);
 		return std::ref(val);
 	}
 	return std::nullopt;
 }
 
-std::optional<std::reference_wrapper<std::vector<NodeValue>>>
-Node::as_vector() {
-	if (std::holds_alternative<std::vector<NodeValue>>(value)) {
-		std::vector<NodeValue> &val = std::get<std::vector<NodeValue>>(value);
+std::optional<std::reference_wrapper<NodeVector>> Node::as_vector() {
+	if (std::holds_alternative<NodeVector>(value)) {
+		NodeVector &val = std::get<NodeVector>(value);
 		return std::ref(val);
 	}
 	return std::nullopt;
@@ -95,9 +97,18 @@ void Node::set_value(Node const &node) { value = NodeValue{node}; }
 void Node::set_value(Node &&node) noexcept {
 	value = NodeValue{std::move(node)};
 }
-void Node::set_value(std::vector<NodeValue> const &vector) { value = vector; }
-void Node::set_value(std::vector<NodeValue> &&vector) noexcept {
+void Node::set_value(NodeVector const &vector) { value = vector; }
+void Node::set_value(NodeVector &&vector) noexcept {
 	value = std::move(vector);
+}
+
+std::string_view Node::get_type() const {
+	return visit<std::string_view>(overloads{
+	    [](const NodeValue &node) -> std::string_view {
+		    return node.get_type();
+	    },
+	    [](const NodeVector &) -> std::string_view { return "NodeVector"; },
+	});
 }
 
 Node &Node::operator=(NodeValue const &other) {
@@ -108,11 +119,11 @@ Node &Node::operator=(NodeValue &&other) noexcept {
 	value = std::move(other);
 	return *this;
 }
-Node &Node::operator=(std::vector<NodeValue> const &other) {
+Node &Node::operator=(NodeVector const &other) {
 	value = other;
 	return *this;
 }
-Node &Node::operator=(std::vector<NodeValue> &&other) noexcept {
+Node &Node::operator=(NodeVector &&other) noexcept {
 	value = std::move(other);
 	return *this;
 }

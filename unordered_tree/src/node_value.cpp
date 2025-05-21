@@ -1,5 +1,6 @@
 #include <algorithm>
 
+#include <initializer_list>
 #include <unordered_tree/node.hpp>
 #include <unordered_tree/node_value.hpp>
 
@@ -12,6 +13,8 @@ NodeValue::NodeValue(Node const &value) : value{value} {}
 NodeValue::NodeValue(Node &&value) : value{std::move(value)} {}
 
 NodeValue::NodeValue(ScalarValue scalar) : value(std::move(scalar)) {}
+NodeValue::NodeValue(std::initializer_list<NodeValue> children)
+    : value(Node(children)) {}
 bool NodeValue::is_scalar() const {
 	return std::holds_alternative<ScalarValue>(value);
 }

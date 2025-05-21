@@ -58,7 +58,7 @@ class ScalarValue {
 	}
 
 	template <typename T, typename... Ts>
-	T visit(const overloads<Ts...> &visitor) const {
+	T visit(const overloads<Ts...>& visitor) const {
 		return std::visit(visitor, value);
 	}
 	std::string_view get_type() const;

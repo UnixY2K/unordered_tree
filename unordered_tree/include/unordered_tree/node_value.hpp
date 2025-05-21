@@ -1,4 +1,5 @@
 #pragma once
+#include <initializer_list>
 #include <memory>
 #include <variant>
 
@@ -43,6 +44,7 @@ class NodeValue {
 	NodeValue(Node const &value);
 	NodeValue(Node &&value);
 	NodeValue(ScalarValue scalar);
+	NodeValue(std::initializer_list<NodeValue>);
 	template <typename T>
 	    requires(DecaysToScalarType<T>)
 	NodeValue(T scalar) : NodeValue(ScalarValue{scalar}){};
