@@ -12,7 +12,7 @@ NodeValue::NodeValue(NodeValue &&other) noexcept
 NodeValue::NodeValue(Node const &value) : value{value} {}
 NodeValue::NodeValue(Node &&value) : value{std::move(value)} {}
 
-NodeValue::NodeValue(ScalarValue scalar) : value(std::move(scalar)) {}
+NodeValue::NodeValue(ScalarValue scalar) : value(scalar) {}
 NodeValue::NodeValue(std::initializer_list<NodeValue> children)
     : value(Node(children)) {}
 bool NodeValue::is_scalar() const {

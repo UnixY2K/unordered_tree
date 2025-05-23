@@ -14,7 +14,7 @@ NodeVariant::NodeVariant(NodeVariant &&other) : value{std::move(other.value)} {
 	other.value.reset(new Node{});
 }
 NodeVariant::NodeVariant(Node const &node) : value{new Node{node}} {}
-NodeVariant::NodeVariant(Node &&node) : value{new Node{std::move(node)}} {}
+NodeVariant::NodeVariant(Node &&node) : value{std::make_unique<Node>(node)} {}
 std::reference_wrapper<Node> NodeVariant::get_value() const {
 	return std::ref(*value);
 }
