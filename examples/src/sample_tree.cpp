@@ -7,6 +7,7 @@
 
 int main() {
 	using ouroboros::Node;
+	using ouroboros::NodeDictionary;
 	using ouroboros::NodeValue;
 	using ouroboros::NodeVariant;
 	using ouroboros::NodeVector;
@@ -22,7 +23,7 @@ int main() {
 	std::cout << std::format("is_node  : {}\n", is_node);
 	std::cout << std::format("type     : {}\n", type);
 
-	Node root = {NodeValue{ScalarValue{"a"},ScalarValue{"b"}}};
+	Node root = NodeDictionary{};
 
 	std::cout << std::format("is_scalar: {}\n", root.is_scalar());
 	std::cout << std::format("is_node  : {}\n", root.is_node());

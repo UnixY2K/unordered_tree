@@ -8,6 +8,7 @@
 namespace ouroboros {
 
 class Node;
+class NodeDictionary;
 
 // class that helps to contain a Node within a NodeValue
 class NodeVariant {
@@ -42,8 +43,11 @@ class NodeValue {
 	NodeValue(NodeValue const &other);
 	NodeValue(NodeValue &&other) noexcept;
 	NodeValue(Node const &value);
-	NodeValue(Node &&value);
-	NodeValue(ScalarValue scalar);
+	NodeValue(Node &&value) noexcept;
+	NodeValue(ScalarValue const &scalar);
+	NodeValue(ScalarValue &&scalar) noexcept;
+	NodeValue(NodeDictionary const &dictionary);
+	NodeValue(NodeDictionary &&dictionary) noexcept;
 	NodeValue(std::initializer_list<NodeValue>);
 	template <typename T>
 	    requires(DecaysToScalarType<T>)

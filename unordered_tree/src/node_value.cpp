@@ -1,4 +1,3 @@
-#include <algorithm>
 
 #include <initializer_list>
 #include <unordered_tree/node.hpp>
@@ -6,13 +5,16 @@
 
 namespace ouroboros {
 
-NodeValue::NodeValue(NodeValue const &other) : value(std::move(other.value)) {}
+NodeValue::NodeValue(NodeValue const &other) : value((other.value)) {}
 NodeValue::NodeValue(NodeValue &&other) noexcept
     : value(std::move(other.value)) {}
 NodeValue::NodeValue(Node const &value) : value{value} {}
-NodeValue::NodeValue(Node &&value) : value{std::move(value)} {}
-
-NodeValue::NodeValue(ScalarValue scalar) : value(scalar) {}
+NodeValue::NodeValue(Node &&value) noexcept : value{Node(value)} {}
+NodeValue::NodeValue(ScalarValue const &scalar) : value(scalar) {}
+NodeValue::NodeValue(ScalarValue &&scalar) noexcept : value(scalar) {}
+NodeValue::NodeValue(NodeDictionary const &dictionary) : value(NodeVariant(dictionary)) {}
+NodeValue::NodeValue(NodeDictionary &&dictionary) noexcept
+    : value(NodeVariant(std::move(dictionary))) {}
 NodeValue::NodeValue(std::initializer_list<NodeValue> children)
     : value(Node(children)) {}
 bool NodeValue::is_scalar() const {

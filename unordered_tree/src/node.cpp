@@ -13,6 +13,8 @@ Node::Node(NodeValue const &value) : value{value} {}
 Node::Node(NodeValue &&value) noexcept : value{std::move(value)} {}
 Node::Node(NodeVector const &value) : value{value} {}
 Node::Node(NodeVector &&value) noexcept : value{std::move(value)} {}
+Node::Node(NodeDictionary const &dictionary) : value(dictionary) {}
+Node::Node(NodeDictionary &&dictionary) noexcept : value{std::move(dictionary)} {}
 Node::Node(std::initializer_list<NodeValue> init_list)
     : value(NodeVector(init_list)) {}
 

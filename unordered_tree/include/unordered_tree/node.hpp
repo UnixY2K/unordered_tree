@@ -10,7 +10,7 @@ namespace ouroboros {
 
 using NodeVector = std::vector<NodeValue>;
 class Node {
-	using node_val_t = std::variant<NodeValue, NodeVector>;
+	using node_val_t = std::variant<NodeValue, NodeVector, NodeDictionary>;
 	// a node can contain 0(monostate/void) or more elements, if the list of
 	// elements is 0 it is empty
 	node_val_t value{std::monostate{}};
@@ -23,6 +23,8 @@ class Node {
 	Node(NodeValue &&value) noexcept;
 	Node(NodeVector const &value);
 	Node(NodeVector &&value) noexcept;
+	Node(NodeDictionary const &dictionary);
+	Node(NodeDictionary &&dictionary) noexcept;
 	Node(std::initializer_list<NodeValue> init_list);
 
 	bool is_empty() const;
