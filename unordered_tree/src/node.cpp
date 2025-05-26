@@ -1,65 +1,35 @@
 #include <optional>
-#include <string>
+
 #include <string_view>
-#include <vector>
 
 #include <unordered_tree/node.hpp>
 #include <unordered_tree/node_value.hpp>
 #include <unordered_tree/scalar_value.hpp>
+#include <variant>
 
 namespace ouroboros {
 
-Node::Node(std::string const &id) : id{id} {}
-Node::Node(std::string &&id) noexcept : id{std::move(id)} {}
 Node::Node(NodeValue const &value) : value{value} {}
 Node::Node(NodeValue &&value) noexcept : value{std::move(value)} {}
 Node::Node(NodeVector const &value) : value{value} {}
 Node::Node(NodeVector &&value) noexcept : value{std::move(value)} {}
 Node::Node(std::initializer_list<NodeValue> init_list)
     : value(NodeVector(init_list)) {}
-Node::Node(std::string const &id, NodeValue const &value)
-    : id{id}, value{value} {}
-Node::Node(std::string &&id, NodeValue &&value) noexcept
-    : id{std::move(id)}, value{std::move(value)} {}
-Node::Node(std::string const &id, NodeVector const &value)
-    : id{id}, value{value} {}
-Node::Node(std::string &&id, NodeVector &&value) noexcept
-    : id{std::move(id)}, value{std::move(value)} {}
-
-void Node::set_id(std::string const &new_id) { id = new_id; }
-void Node::set_id(std::string &&new_id) noexcept { id = std::move(new_id); }
-std::string_view Node::get_id() const { return id; }
 
 bool Node::is_empty() const {
 	auto scalar = as_scalar();
-	if (scalar) {
-		return scalar->is<void>();
-	}
-	return false;
+	return scalar && scalar->is<void>();
 }
 
 bool Node::is_scalar() const {
 	auto scalar = as_scalar();
-	if (scalar) {
-		return !scalar->is<void>();
-	}
-	return false;
+	return scalar && !scalar->is<void>();
 }
 
-bool Node::is_node() const {
-	auto node = as_node();
-	if (node) {
-		return true;
-	}
-	return false;
-}
+bool Node::is_node() const { return std::holds_alternative<NodeValue>(value); }
 
 bool Node::is_vector() const {
-	auto vector = as_vector();
-	if (vector) {
-		return true;
-	}
-	return false;
+	return std::holds_alternative<NodeVector>(value);
 }
 
 std::optional<ScalarValue> Node::as_scalar() const {

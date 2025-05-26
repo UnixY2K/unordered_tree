@@ -1,6 +1,6 @@
 #pragma once
+#include <initializer_list>
 #include <optional>
-#include <string>
 #include <variant>
 #include <vector>
 
@@ -11,7 +11,6 @@ namespace ouroboros {
 using NodeVector = std::vector<NodeValue>;
 class Node {
 	using node_val_t = std::variant<NodeValue, NodeVector>;
-	std::string id;
 	// a node can contain 0(monostate/void) or more elements, if the list of
 	// elements is 0 it is empty
 	node_val_t value{std::monostate{}};
@@ -20,21 +19,11 @@ class Node {
 	Node() = default;
 	Node(Node const &other) noexcept = default;
 	Node(Node &&other) = default;
-	Node(std::string const &id);
-	Node(std::string &&id) noexcept;
 	Node(NodeValue const &value);
 	Node(NodeValue &&value) noexcept;
 	Node(NodeVector const &value);
 	Node(NodeVector &&value) noexcept;
 	Node(std::initializer_list<NodeValue> init_list);
-	Node(std::string const &id, NodeValue const &value);
-	Node(std::string &&id, NodeValue &&value) noexcept;
-	Node(std::string const &id, NodeVector const &value);
-	Node(std::string &&id, NodeVector &&value) noexcept;
-
-	void set_id(std::string const &new_id);
-	void set_id(std::string &&new_id) noexcept;
-	std::string_view get_id() const;
 
 	bool is_empty() const;
 	bool is_scalar() const;

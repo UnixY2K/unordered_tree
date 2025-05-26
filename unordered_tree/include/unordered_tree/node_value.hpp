@@ -79,4 +79,8 @@ class NodeValue {
 	NodeValue &operator=(NodeValue &&other) noexcept = default;
 };
 
+class NodeDictionary{
+
+};
+
 } // namespace ouroboros
