@@ -1,14 +1,18 @@
 #pragma once
 #include <initializer_list>
 #include <memory>
+#include <unordered_map>
 #include <variant>
+#include <vector>
 
 #include <unordered_tree/scalar_value.hpp>
 
 namespace ouroboros {
 
 class Node;
-class NodeDictionary;
+class NodeValue;
+using NodeDictionary = std::unordered_map<std::string, NodeValue>;
+using NodeVector = std::vector<NodeValue>;
 
 // class that helps to contain a Node within a NodeValue
 class NodeVariant {
@@ -46,6 +50,8 @@ class NodeValue {
 	NodeValue(Node &&value) noexcept;
 	NodeValue(ScalarValue const &scalar);
 	NodeValue(ScalarValue &&scalar) noexcept;
+	NodeValue(NodeVector const &dictionary);
+	NodeValue(NodeVector &&dictionary) noexcept;
 	NodeValue(NodeDictionary const &dictionary);
 	NodeValue(NodeDictionary &&dictionary) noexcept;
 	NodeValue(std::initializer_list<NodeValue>);
@@ -81,10 +87,6 @@ class NodeValue {
 	NodeValue &operator=(Node &&other) noexcept;
 	NodeValue &operator=(NodeValue const &other) = default;
 	NodeValue &operator=(NodeValue &&other) noexcept = default;
-};
-
-class NodeDictionary{
-
 };
 
 } // namespace ouroboros

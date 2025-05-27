@@ -1,3 +1,4 @@
+#include <functional>
 #include <optional>
 
 #include <string_view>
@@ -14,7 +15,8 @@ Node::Node(NodeValue &&value) noexcept : value{std::move(value)} {}
 Node::Node(NodeVector const &value) : value{value} {}
 Node::Node(NodeVector &&value) noexcept : value{std::move(value)} {}
 Node::Node(NodeDictionary const &dictionary) : value(dictionary) {}
-Node::Node(NodeDictionary &&dictionary) noexcept : value{std::move(dictionary)} {}
+Node::Node(NodeDictionary &&dictionary) noexcept
+    : value{std::move(dictionary)} {}
 Node::Node(std::initializer_list<NodeValue> init_list)
     : value(NodeVector(init_list)) {}
 
@@ -32,6 +34,10 @@ bool Node::is_node() const { return std::holds_alternative<NodeValue>(value); }
 
 bool Node::is_vector() const {
 	return std::holds_alternative<NodeVector>(value);
+}
+
+bool Node::is_dictionary() const {
+	return std::holds_alternative<NodeDictionary>(value);
 }
 
 std::optional<ScalarValue> Node::as_scalar() const {
@@ -65,12 +71,33 @@ std::optional<std::reference_wrapper<NodeVector>> Node::as_vector() {
 	return std::nullopt;
 }
 
+std::optional<std::reference_wrapper<NodeDictionary>> Node::as_dictionary() {
+	if (std::holds_alternative<NodeDictionary>(value)) {
+		NodeDictionary &val = std::get<NodeDictionary>(value);
+		return std::ref(val);
+	}
+	return std::nullopt;
+}
+
+std::optional<std::reference_wrapper<const NodeDictionary>>
+Node::as_dictionary() const {
+	if (std::holds_alternative<NodeDictionary>(value)) {
+		NodeDictionary const &val = std::get<NodeDictionary>(value);
+		return std::ref(val);
+	}
+	return std::nullopt;
+}
+
 void Node::set_value(Node const &node) { value = NodeValue{node}; }
 void Node::set_value(Node &&node) noexcept {
 	value = NodeValue{std::move(node)};
 }
 void Node::set_value(NodeVector const &vector) { value = vector; }
 void Node::set_value(NodeVector &&vector) noexcept {
+	value = std::move(vector);
+}
+void Node::set_value(NodeDictionary const &vector) { value = vector; }
+void Node::set_value(NodeDictionary &&vector) noexcept {
 	value = std::move(vector);
 }
 
@@ -80,6 +107,9 @@ std::string_view Node::get_type() const {
 		    return node.get_type();
 	    },
 	    [](const NodeVector &) -> std::string_view { return "NodeVector"; },
+	    [](const NodeDictionary &) -> std::string_view {
+		    return "NodeDictionary";
+	    },
 	});
 }
 
@@ -96,6 +126,14 @@ Node &Node::operator=(NodeVector const &other) {
 	return *this;
 }
 Node &Node::operator=(NodeVector &&other) noexcept {
+	value = std::move(other);
+	return *this;
+}
+Node &Node::operator=(NodeDictionary const &other) {
+	value = other;
+	return *this;
+}
+Node &Node::operator=(NodeDictionary &&other) noexcept {
 	value = std::move(other);
 	return *this;
 }

@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>
 #include <initializer_list>
 #include <optional>
 #include <variant>
@@ -31,11 +32,15 @@ class Node {
 	bool is_scalar() const;
 	bool is_node() const;
 	bool is_vector() const;
+	bool is_dictionary() const;
 
 	std::optional<ScalarValue> as_scalar() const;
 	std::optional<std::reference_wrapper<Node>> as_node() const;
 	std::optional<std::reference_wrapper<const NodeVector>> as_vector() const;
 	std::optional<std::reference_wrapper<NodeVector>> as_vector();
+	std::optional<std::reference_wrapper<NodeDictionary>> as_dictionary();
+	std::optional<std::reference_wrapper<const NodeDictionary>>
+	as_dictionary() const;
 
 	template <typename T>
 	    requires(DecaysToScalarType<T>)
@@ -47,6 +52,8 @@ class Node {
 	void set_value(Node &&node) noexcept;
 	void set_value(NodeVector const &vector);
 	void set_value(NodeVector &&vector) noexcept;
+	void set_value(NodeDictionary const &dictionary);
+	void set_value(NodeDictionary &&dictionary) noexcept;
 
 	template <typename T> constexpr bool is() const {
 		if constexpr (std::is_same_v<T, ScalarValue>) {
@@ -55,6 +62,8 @@ class Node {
 			return is_node();
 		} else if constexpr (std::is_same_v<T, NodeVector>) {
 			return is_vector();
+		} else if constexpr (std::is_same_v<T, NodeDictionary>) {
+			return is_dictionary();
 		} else {
 			auto value = as_scalar();
 			return value && value->is<T>();
@@ -67,6 +76,8 @@ class Node {
 			return as_node();
 		} else if constexpr (std::is_same_v<T, NodeVector>) {
 			return as_vector();
+		} else if constexpr (std::is_same_v<T, NodeDictionary>) {
+			return as_dictionary();
 		} else {
 			auto value = as_scalar();
 			return value && value->as<T>();
@@ -85,6 +96,8 @@ class Node {
 	Node &operator=(NodeValue &&other) noexcept;
 	Node &operator=(NodeVector const &other);
 	Node &operator=(NodeVector &&other) noexcept;
+	Node &operator=(NodeDictionary const &other);
+	Node &operator=(NodeDictionary &&other) noexcept;
 };
 
 } // namespace ouroboros

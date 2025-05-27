@@ -23,7 +23,9 @@ int main() {
 	std::cout << std::format("is_node  : {}\n", is_node);
 	std::cout << std::format("type     : {}\n", type);
 
-	Node root = NodeDictionary{};
+	Node root =
+	    NodeDictionary{{"hello", std::string{"world"}},
+	                   {"another", NodeValue{NodeVector{"internal", "value"}}}};
 
 	std::cout << std::format("is_scalar: {}\n", root.is_scalar());
 	std::cout << std::format("is_node  : {}\n", root.is_node());

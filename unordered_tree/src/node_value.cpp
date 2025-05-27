@@ -12,7 +12,11 @@ NodeValue::NodeValue(Node const &value) : value{value} {}
 NodeValue::NodeValue(Node &&value) noexcept : value{Node(value)} {}
 NodeValue::NodeValue(ScalarValue const &scalar) : value(scalar) {}
 NodeValue::NodeValue(ScalarValue &&scalar) noexcept : value(scalar) {}
-NodeValue::NodeValue(NodeDictionary const &dictionary) : value(NodeVariant(dictionary)) {}
+NodeValue::NodeValue(NodeVector const &vector) : value(NodeVariant(vector)) {}
+NodeValue::NodeValue(NodeVector &&vector) noexcept
+    : value(NodeVariant(std::move(vector))) {}
+NodeValue::NodeValue(NodeDictionary const &dictionary)
+    : value(NodeVariant(dictionary)) {}
 NodeValue::NodeValue(NodeDictionary &&dictionary) noexcept
     : value(NodeVariant(std::move(dictionary))) {}
 NodeValue::NodeValue(std::initializer_list<NodeValue> children)
